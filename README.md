@@ -1,37 +1,39 @@
+> If this project helped you, please consider leaving some stars [on the Github](https://github.com/Derec-Mods)! 
+
+[![Support me on Ko-fi](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/donate/kofi-singular-alt_vector.svg)](https://ko-fi.com/derexxd) 
+
+# Trading Hall Optimizer
+
 ![image](https://github.com/user-attachments/assets/2716b281-48a6-4a1a-9305-0560684d4e0f)
 
-# VillagerLobotimizer
+This plugin was originally created by [mja00](https://github.com/mja00) as Villager Lobotomizer, whom I worked with on the original project. This project is a revival and continuation fork, maintained to provide modern version support, fix tricky confinement scenarios, and optimize performance across newer Paper and Folia servers.
 
-A Minecraft Paper plugin that improves server performance by turning off villagers' AI when they're confined to trading halls.
+## Description 
 
-<a href="https://modrinth.com/plugin/villagerlobotomy" target="_blank" rel="noopener noreferrer"><img alt="modrinth" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/modrinth_vector.svg"></a> <a href="https://hangar.papermc.io/mja00/VillagerLobotimizer"><img alt="hangar" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/hangar_vector.svg"></a> <a href="https://www.curseforge.com/minecraft/bukkit-plugins/villagerlobotomy" target="_blank" rel="noopener noreferrer"><img alt="curseforge" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/curseforge_vector.svg"></a>
-
-![](https://img.shields.io/bstats/players/25704?color=green?label=Players) ![](https://img.shields.io/bstats/servers/25704?color=green?label=Servers) ![](https://modrinth.roughness.technology/full_villagerlobotomy_downloads.svg)
+Trading Hall Optimizer is a Paper/Folia plugin that eliminates server lag caused by villager AI in trading halls. When villagers are confined in trading stalls or cells, their pathfinding and goal selectors are disabled ("lobotomized") while preserving normal trading, profession restocks, experience leveling, and Hero of the Village gifts.
 
 ## Features
-
-- Automatically detects when villagers are trapped in trading halls
-- Disables AI for trapped villagers to improve server performance
-- Maintains villager trading functionality while AI is disabled
-- Automatically refreshes villager trades on a configurable schedule with randomization support
-- Profession-specific restock sounds and level-up celebrations
-- Lobotomized villagers still give Hero of the Village gifts, at vanilla's pace
-- Optimized job site detection for better performance
-- Night-time trade refresh functionality
-- Allows naming villagers to control their behavior ("nobrain", "alwaysbrain")
-- Debug mode for troubleshooting
-- Command system for checking villager status and managing the plugin
+* **Automatic AI Disabling:** Shuts off AI for villagers confined to trading stalls, drastically reducing tick lag on survival servers.
+* **Full Trading Functionality:** Maintains vanilla trading, experience leveling, demand updates, and scheduled restocks.
+* **Configurable Restocks:** Automatic restocking on a configurable interval with optional randomization and workstation proximity checks.
+* **Hero of the Village Support:** Lobotomized villagers still grant gifts to heroes within line of sight.
+* **Name Tag Controls:** Tag villagers with `nobrain` to force-lobotomize or `alwaysbrain` to keep them active.
+* **Sound & Visual Feedback:** Supports custom or profession-specific restock sounds and level-up celebrations.
+* **Folia Support:** Built with region-aware and entity-safe schedulers for Paper and Folia compatibility.
+* **Trading Enforcement:** Optional setting to prevent players from trading with roaming, unconfined villagers.
+* **Diagnostic & Debug Tools:** In-depth `/lobotomy debug` inspection showing precise block-by-block confinement decisions.
 
 ## Commands
+* `/lobotomy info` - Shows counts and percentages of active and lobotomized villagers.
+* `/lobotomy debug` - Inspects the targeted villager and displays a detailed block-by-block confinement report.
+* `/lobotomy debug toggle` - Toggles console transition logging for debugging.
+* `/lobotomy wake` - Restores AI to the targeted villager.
+* `/lobotomy reload` - Reloads the configuration and re-evaluates all tracked villagers.
+* `/lobotomy uninstall` - Guides safe uninstallation by restoring AI to all villagers.
 
-- `/lobotomy info` - Shows statistics about lobotomized and active villagers
-- `/lobotomy debug` - Shows detailed information about the villager you're looking at, including which lobotomy rules passed, decided, or were skipped, and why each neighbouring block counts as open or blocked. The report is also written to the console so it can be pasted into a bug report
-- `/lobotomy debug <entity>` - Shows the same report for a specific villager
-- `/lobotomy debug toggle` - Toggles debug mode. While on, every activate/lobotomize transition in the console names the rule that caused it
-- `/lobotomy wake` - Manually restores AI to the villager you're looking at
-- `/lobotomy reload` - Reloads the configuration and applies changes to all villagers
-- `/lobotomy uninstall` - Explains what removing the plugin will do, without doing it
-- `/lobotomy uninstall confirm` - Restores AI to every villager the plugin has lobotomized, clears its data from them, then disables the plugin
+## Special Villager Names
+* Name a villager with `nobrain` to force AI to stay disabled.
+* Name a villager with `alwaysbrain` to prevent it from ever being lobotomized (configurable in `always-active-names`).
 
 ## Configuration
 
@@ -112,189 +114,15 @@ persist-lobotomized-state: true
 
 #Let lobotomized villagers give Hero of the Village gifts, which their disabled AI otherwise prevents. Like vanilla, a villager's gift timer (30s after it loads, then 30s-5.5min between gifts) runs while it can see a hero within 16 blocks; once it is done the villager turns to the hero and throws the gift (from vanilla's loot tables) when the hero is within 5 blocks. If its cell would block the throw, the gift is dropped at the hero's feet instead.
 hero-gifts-from-lobotomized-villagers: true
-
-# ===== SENTRY ERROR TRACKING =====
-# Sentry is an error monitoring service that helps developers identify and fix bugs proactively.
-# When enabled, the plugin will automatically report crashes and exceptions to the developers.
-#
-# WHAT DATA IS COLLECTED:
-#   - Exception stack traces and error messages
-#   - Server type and version (Paper, Purpur, Folia, etc.)
-#   - Minecraft version and Bukkit API version
-#   - Java version
-#   - Plugin version
-#   - Thread information and task scheduling context
-#
-# WHAT DATA IS NOT COLLECTED:
-#   - Player names, UUIDs, or any player-identifiable information
-#   - Chat messages or commands
-#   - World data, coordinates, or block information
-#   - Server IP address or hostname
-#   - Server configuration (beyond this plugin's settings)
-#
-# WHY KEEP THIS ENABLED:
-#   - Helps developers discover and fix bugs you might not even report
-#   - Provides context to fix issues specific to your server setup (Folia vs Paper, Java version, etc.)
-#   - Errors are sent automatically - no need to manually report bugs
-#   - All data is anonymized and used solely for debugging purposes
-#
-# PRIVACY: No personally identifiable information (PII) is collected. Only technical error data is sent.
-#
-# Set to false if you prefer not to share error reports with developers.
-enable-sentry: true
 ```
-
-## Special Villager Names
-
-- Name a villager with "nobrain" to force it to always be lobotomized
-- Name a villager with "alwaysbrain" to prevent it from ever being lobotomized (configurable in `always-active-names`)
 
 ## Sound System
+* **Default Restock Sounds:** When `restock-sound` is left empty, villagers use their profession-specific work sounds.
+* **Custom Sounds:** Override restock or level-up sounds using standard Minecraft sound keys or custom resource-pack keys.
+* **Level-Up Celebrations:** Villagers play celebrations and emit regeneration particles when leveling up trades.
 
-The plugin features an enhanced sound system:
-- **Default restock sounds**: When `restock-sound` is left empty, villagers will play default sounds when restocking
-- **Customizable sounds**: You can override the default sounds by specifying a custom sound in the configuration
-- **Sound reference**: A complete list of available sounds can be found in the [Paper API documentation](https://jd.papermc.io/paper/io/papermc/paper/registry/keys/SoundEventKeys.html)
-- **Level-up celebrations**: Villagers play celebration sounds when they level up their trades
+## ❤️ Credits
+* **Original Author:** [mja00](https://github.com/mja00)
+* **Contributors:** [DerexXD](https://github.com/DereC4)
 
-## Privacy & Telemetry
-
-This plugin uses two services to help improve quality and fix bugs:
-
-### bStats (Usage Analytics)
-
-The plugin uses [bStats](https://bstats.org/) to collect anonymous usage statistics, including:
-- Number of servers using the plugin
-- Number of players on those servers
-- Server software (Paper, Purpur, etc.)
-- Plugin version distribution
-
-This data helps us understand how the plugin is used and prioritize development efforts. All data is anonymous and publicly viewable at [bStats Plugin Page](https://bstats.org/plugin/bukkit/VillagerLobotimizer/25704).
-
-**Opt-out:** You can disable bStats globally in `plugins/bStats/config.yml` by setting `enabled: false`.
-
-### Sentry (Error Tracking)
-
-The plugin uses [Sentry](https://sentry.io/) to automatically report errors and exceptions, helping developers identify and fix bugs proactively.
-
-**What data is collected:**
-- Exception stack traces and error messages
-- Server type and version (Paper, Purpur, Folia, etc.)
-- Minecraft version, Bukkit API version, and Java version
-- Plugin version
-- Thread information and task scheduling context
-
-**What data is NOT collected:**
-- Player names, UUIDs, or any player-identifiable information
-- Chat messages or commands
-- World data, coordinates, or block information
-- Server IP address or hostname
-- Any personally identifiable information (PII)
-
-All error data is anonymized and used solely for debugging purposes.
-
-**Opt-out:** Set `enable-sentry: false` in `config.yml` to disable error reporting.
-
-## Requirements
-
-- Paper (or its forks) 1.21.11 or 26.1–26.3
-- Java 21 for 1.21.11 servers; Java 25 for 26.x servers (Mojang's requirement)
-- JDK 21 or newer for development
-
-## Installation
-
-1. Download the latest release from [Modrinth](https://modrinth.com/plugin/villagerlobotomy), [Hangar](https://hangar.papermc.io/mja00/VillagerLobotimizer), or [CurseForge](https://www.curseforge.com/minecraft/bukkit-plugins/villagerlobotimizer)
-2. Place the .jar file in your server's plugins folder
-3. Restart your server or use a plugin manager to load the plugin
-4. Configure the plugin settings in `plugins/VillagerLobotimizer/config.yml` if needed
-
-### Uninstalling
-
-Run `/lobotomy uninstall confirm` before deleting the jar.
-
-Lobotomized villagers have their AI disabled on disk, so they stay that way whether or not the plugin
-is installed. The command restores every villager the plugin has touched, loading chunks as needed to
-reach the ones that are not in memory, removes its data from them, and then disables itself. Deleting
-the jar without running it leaves those villagers without AI and nothing left to fix them.
-
-## Development
-
-### Prerequisites
-
-- Java Development Kit (JDK) 21 or newer (JDK 25 to run the test server)
-- Gradle (wrapper included)
-
-### Building
-
-1. Clone the repository
-   ```bash
-   git clone https://github.com/mja00/VillagerLobotimizer.git
-   cd VillagerLobotimizer
-   ```
-
-2. Build the plugin
-   ```bash
-   ./gradlew build
-   ```
-   The built plugin will be in `build/libs/VillagerLobotimizer-<version>.jar`
-
-### Running a test server
-
-The project uses the run-paper plugin to easily test changes:
-
-```bash
-./gradlew runServer
-```
-
-This will download a Paper server for Minecraft 26.3 and start it with the plugin installed.
-
-### Publishing
-
-You can publish to Hangar, Modrinth, and CurseForge using the same shaded artifact built by `shadowJar`.
-
-- **Hangar**:
-
-  ```bash
-  ./gradlew publishPluginPublicationToHangar
-  ```
-
-  Requires `HANGAR_API_KEY` in the environment. The task auto-detects whether the current commit is tagged to decide Release vs Snapshot.
-
-- **Modrinth**:
-
-  ```bash
-  ./gradlew modrinth
-  ```
-
-  Requires `MODRINTH_TOKEN` in the environment. Optionally set the project id/slug via Gradle property:
-
-  ```bash
-  ./gradlew modrinth -Pmodrinth.projectId=villagerlobotomy
-  ```
-
-  Game versions come from `modrinthGameVersions` in `build.gradle.kts` (currently `1.21.11` and `26.1`–`26.3`). Tagged commits publish a Release; otherwise a Snapshot-like Beta with a short git hash suffix.
-
-- **Publish everywhere** (Hangar + Modrinth):
-
-  ```bash
-  ./gradlew publishAll
-  ```
-
-- **CurseForge**:
-
-  ```bash
-  CURSEFORGE_TOKEN=… \
-  CURSEFORGE_GAME_VERSIONS="1.21.11,26.1,26.1.1,26.1.2,26.2,26.3" \
-  CURSEFORGE_JAR="$(ls build/libs/VillagerLobotimizer-*.jar)" \
-  ./scripts/publish-curseforge.sh
-  ```
-
-  CurseForge is published by `scripts/publish-curseforge.sh`, not Gradle: project `1601723` only accepts CurseForge's legacy flat "Minecraft" version list (typeID 1), which the CurseForgeGradle plugin cannot emit. The script resolves those IDs and uploads via the API. Keep `CURSEFORGE_GAME_VERSIONS` in sync with `modrinthGameVersions` in `build.gradle.kts`. In CI the release workflow runs this automatically (Release on a tag, otherwise Beta).
-
-## Support
-
-If you encounter any issues, please report them on [GitHub](https://github.com/mja00/VillagerLobotimizer/issues).
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is open-source and licensed under the [MIT License](LICENSE).
